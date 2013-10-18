@@ -3,7 +3,7 @@
 <?php
 
 if(isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'vps.kaustik.com'){
-    $filePathDir = '/home/zippo/Maildir/.Podio/cur';
+    $filePathDir = '/home/zippo/Maildir/.Podio/cur/';
 } else{
     $filePathDir = 'tmp/.Podio/cur/';
 }
