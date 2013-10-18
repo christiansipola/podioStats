@@ -59,6 +59,7 @@ foreach($dir as $file){
     <th>Datum</th>
     <th>Notices</th>
     <th>Mentions</th>
+    <th>Mentions %</th>
     </tr>
 </thead>
 <tbody>
@@ -72,6 +73,9 @@ foreach($dir as $file){
         </td>
         <td>
         <?=$d['mentions'] ?>
+        </td>
+        <td>
+        <?=round($d['mentions']/$d['notices'],3)*100 ?> %
         </td>
     </tr>
 <?php } ?>
