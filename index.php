@@ -11,7 +11,12 @@ $dir = scandir($filePathDir);
 $show = array();
 
 $data = array();
+$notReadable = array();
 foreach($dir as $file){
+    if(!is_readable($filePathDir.$file)){
+        $notReadable[] = $file;
+        continue;
+    }
     $arr = file($filePathDir.$file);
     if(empty($arr)){
         continue;
@@ -81,5 +86,7 @@ foreach($dir as $file){
 <?php } ?>
 </tbody>
 </table>
+Not readable:<br />
+<?=implode(', ', $notReadable) ?>
 </body>
 </html>
