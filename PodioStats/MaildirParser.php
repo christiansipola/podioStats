@@ -4,28 +4,38 @@ namespace PodioStats;
 class MaildirParser
 {
 
+    private $filePathDir;
+    
     private $notReadable;
     private $data;
     
     public function __construct()
     {
         if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'vps.kaustik.com') {
-            $filePathDir = '/home/zippo/Maildir/.Podio/cur/';
+            $this->filePathDir = '/home/zippo/Maildir/.Podio/cur/';
+            $this->readFromMaildir();
+            #echo serialize($maildirParser->getData());die();
         } else {
-            $filePathDir = 'tmp/.Podio/cur/';
+            $this->filePathDir = 'tmp/.Podio/cur/';
+            $this->readFromCache();
+            $this->filterOutWeekendFromData();
         }
-        $dir = scandir($filePathDir);
+        
+    }
+    public function readFromMaildir()
+    {
+        $dir = scandir($this->filePathDir);
         $show = array();
         
         $this->data = new \ArrayObject();
         
         $this->notReadable = array();
         foreach ($dir as $file) {
-            if (! is_readable($filePathDir . $file)) {
+            if (! is_readable($this->filePathDir . $file)) {
                 $this->notReadable[] = $file;
                 continue;
             }
-            $arr = file($filePathDir . $file);
+            $arr = file($this->filePathDir . $file);
             if (empty($arr)) {
                 continue;
             }
@@ -58,6 +68,12 @@ class MaildirParser
         }
         
     }
+	
+    public function readFromCache(){
+        include('cache.php');
+        $this->data = $object;
+        $this->notReadable = array();
+    }
 	/**
      * @return the $notReadable
      */
@@ -72,6 +88,27 @@ class MaildirParser
     public function getData()
     {
         return $this->data;
+    }
+    
+    private function filterOutWeekendFromData(){
+
+        /* @var $day Day */
+        $newData = new \ArrayObject();
+        foreach ($this->data as $key => $day) {
+            $dayOfWeek = $day->getDate()->format('D');
+            if ($dayOfWeek == 'Sat' && $dayOfWeek == 'Sun') {
+                continue;
+            }
+            if($day->getNotices() > 100) {
+                continue;
+            }
+            
+            if($day->getNotices() < 30) {
+                continue;
+            }
+            $newData->append($day);                
+        }
+        $this->data = $newData;
     }
 
 }

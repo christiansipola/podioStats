@@ -92,7 +92,6 @@ class Day
     
     public static function getArrayAsLineChartJson(\ArrayObject $array)
     {
-        /* @var $day Day */
         $data = array(
             'labels' => array(),
             'datasets' => array(
@@ -103,15 +102,55 @@ class Day
                 array(
                     'fillColor' => 'rgba(151,187,205,0.5)',
                     'data'=>array()
+                ),
+                array(
+                    'fillColor' => 'yellow',
+                    'data'=>array()
                 )
             ),
         );        
+        $Yfit = self::getYfitFromArray($array);
+        $i = 0;
+        /* @var $day Day */
         foreach ($array as $day) {
             $data['labels'][] = $day->getDate()->format('Y-m-d');
             $data['datasets'][0]['data'][] = $day->getNotices();
             $data['datasets'][1]['data'][] = $day->getMentions();
+            $data['datasets'][2]['data'][] = $Yfit[$i++];
+        }
+        return json_encode($data);
+    }
+    
+    public static function getYfitFromArray(\ArrayObject $array)
+    {
+        $X = array();
+        $i = 1;
+        /* @var $day Day */
+        foreach ($array as $day) {
+            $X[] = $i++;
+            $Y[] = $day->getNotices();
         }
         
-        return json_encode($data);
+        // Now convert to log-scale for X
+        $logX = array_map('log', $X);
+        
+        // Now estimate $a and $b using equations from Math World
+        $n = count($X);
+        $square = create_function('$x', 'return pow($x,2);');
+        $x_squared = array_sum(array_map($square, $logX));
+        $y_squared = array_sum(array_map($square, $Y));
+        $xy = array_sum(array_map(create_function('$x,$y', 'return $x*$y;'), $logX, $Y));
+        
+        $bFit = ($n * $xy - array_sum($Y) * array_sum($logX)) /
+        ($n * $x_squared - pow(array_sum($logX), 2));
+        
+        $aFit = (array_sum($Y) - $bFit * array_sum($logX)) / $n;
+    
+        $Yfit = array();
+        foreach($X as $x) {
+            $Yfit[] = $aFit + $bFit * log($x);
+        }
+        
+        return $Yfit;
     }
 }
