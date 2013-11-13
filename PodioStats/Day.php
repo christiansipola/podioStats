@@ -71,7 +71,7 @@ class Day
     }
     
     public function getPercentMentions(){
-        return round($this->mentions/$this->notices,3)*100;
+        return round($this->mentions/$this->notices,3);
     }
     
     /**

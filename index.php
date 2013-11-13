@@ -17,6 +17,7 @@ $maildirParser = new PodioStats\MaildirParser();
 <body>
     <h1>Podiostatistics for Christian Sipola</h1>
     <canvas id="myChart" width="1200" height="400"></canvas>
+    <div style="width:400px">
     <table id="datatable" style="width:100%" cellpadding="2px">
     <thead>
         <tr>
@@ -46,13 +47,13 @@ $maildirParser = new PodioStats\MaildirParser();
             <?=$day->getMentions() ?>
             </td>
             <td>
-            <?=$day->getPercentMentions() ?> %
+            <?=$day->getPercentMentions() ?>
             </td>
         </tr>
     <?php } ?>
     </tbody>
     </table>
-    
+    </div>
     
     
     <div>Not readable:</div>
