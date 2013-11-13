@@ -16,7 +16,7 @@ $maildirParser = new PodioStats\MaildirParser();
 </head>
 <body>
     <h1>Podiostatistics for Christian Sipola</h1>
-    <canvas id="myChart" width="800" height="400"></canvas>
+    <canvas id="myChart" width="1200" height="400"></canvas>
     <table id="datatable" style="width:100%" cellpadding="2px">
     <thead>
         <tr>
