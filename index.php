@@ -21,8 +21,8 @@ $maildirParser = new PodioStats\MaildirParser();
     <table id="datatable" style="width:100%" cellpadding="2px">
     <thead>
         <tr>
-        <th>Day</th>
         <th>Date</th>
+        <th>Day</th>
         <th>Notices</th>
         <th>Mentions</th>
         <th>Mentions %</th>
@@ -35,10 +35,10 @@ $maildirParser = new PodioStats\MaildirParser();
     ?>
         <tr>
             <td>
-            <?=$day->getDate()->format('D') ?>
+            <?=$day->getDate()->format('y-m-d') ?>
             </td>
             <td>
-            <?=$day->getDate()->format('y-m-d') ?>
+            <?=$day->getDate()->format('D') ?>
             </td>
             <td>
             <?=$day->getNotices() ?>
