@@ -9,12 +9,15 @@ $maildirParser = new PodioStats\MaildirParser();
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Podiostatistics for Christian Sipola</title>
+    <script src="js/jquery/jquery.1.7.2.min.js"></script>
+    <script src="js/jquery-plugins/jquery.dataTables.js"></script>
     <script src="js/Chart.js"></script>
+    <link href="css/demo_table.css" rel="stylesheet">
 </head>
 <body>
     <h1>Podiostatistics for Christian Sipola</h1>
     <canvas id="myChart" width="800" height="400"></canvas>
-    <table border="1px">
+    <table id="datatable" style="width:100%" cellpadding="2px">
     <thead>
         <tr>
         <th>Day</th>
@@ -62,5 +65,25 @@ $maildirParser = new PodioStats\MaildirParser();
     var ctx = document.getElementById("myChart").getContext("2d");
     var myNewChart = new Chart(ctx).Line(data,options);
     </script>
+    
+    <script type="text/javascript">
+    jQuery(document).ready(function(){
+					//.columnFilter() on oTable is column filter
+           var oTable = jQuery('#datatable').dataTable( {
+	 					//C = show hide columns
+	 					//i = paginate info
+	 					//p = paginate select
+	 					//l = number of rows per page
+	 					//f = search
+	 					//r = ?
+	 					//t = ?
+	 					//T = tableTools
+	 					//<"clear"> = ?
+						"sDom": 'CipflT<"clear">t',
+						 "bPaginate": false,
+						//"aaSorting": [[ 0, 'asc' ]]
+					} )
+	});
+ </script>
 </body>
 </html>
