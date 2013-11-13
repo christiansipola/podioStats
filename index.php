@@ -1,92 +1,66 @@
-<html>
-<body>
 <?php
-
-if(isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'vps.kaustik.com'){
-    $filePathDir = '/home/zippo/Maildir/.Podio/cur/';
-} else{
-    $filePathDir = 'tmp/.Podio/cur/';
-}
-$dir = scandir($filePathDir);
-$show = array();
-
-$data = array();
-$notReadable = array();
-foreach($dir as $file){
-    if(!is_readable($filePathDir.$file)){
-        $notReadable[] = $file;
-        continue;
-    }
-    $arr = file($filePathDir.$file);
-    if(empty($arr)){
-        continue;
-    }
-    $dateFound = false;
-    $isMention = false;
-    foreach($arr as $row){
-        
-       
-        if(substr($row, 0,5) == 'Date:'){
-            $dateFound = true;
-            $timeString = substr($row, 6);
-            $date = strtotime($timeString);
-            $ymd = date('Y-m-d',$date);
-            $day['date'] = $ymd;
-        }
-        
-        if(substr($row, 0,8) == 'Subject:' && stristr($row, 'mention')){
-            $isMention = true;
-        }
-        
-        
-    }
-    if(!$dateFound){
-        echo "no date found in $file <br />";
-    } else {
-        if(!isset($data[$ymd])){
-            $data[$ymd] = array(
-            	'mentions' => 0,
-                'notices'  => 0,
-            ); 
-        }
-        $data[$ymd]['notices']++;
-        if($isMention){
-            $data[$ymd]['mentions']++;
-        }
-    }
-}
-
+require('SplClassLoader.php');
+$classLoader = new SplClassLoader('PodioStats', '.');
+$classLoader->register();
+$maildirParser = new PodioStats\MaildirParser();
 ?>
-<h1>Podiostatistik f&ouml;r Christian Sipola</h1>
-<table border="1px">
-<thead>
-    <tr>
-    <th>Datum</th>
-    <th>Notices</th>
-    <th>Mentions</th>
-    <th>Mentions %</th>
-    </tr>
-</thead>
-<tbody>
-<?php foreach($data as $ymd => $d){ ?>
-    <tr>
-        <td>
-        <?=$ymd ?>
-        </td>
-        <td>
-        <?=$d['notices'] ?>
-        </td>
-        <td>
-        <?=$d['mentions'] ?>
-        </td>
-        <td>
-        <?=round($d['mentions']/$d['notices'],3)*100 ?> %
-        </td>
-    </tr>
-<?php } ?>
-</tbody>
-</table>
-Not readable:<br />
-<?=implode(', ', $notReadable) ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="sv">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Podiostatistics for Christian Sipola</title>
+    <script src="js/Chart.js"></script>
+</head>
+<body>
+    <h1>Podiostatistics for Christian Sipola</h1>
+    <canvas id="myChart" width="800" height="400"></canvas>
+    <table border="1px">
+    <thead>
+        <tr>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Notices</th>
+        <th>Mentions</th>
+        <th>Mentions %</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php 
+    /* @var $day PodioStats\Day */  
+    foreach($maildirParser->getData() as $ymd => $day){ 
+    ?>
+        <tr>
+            <td>
+            <?=$day->getDate()->format('D') ?>
+            </td>
+            <td>
+            <?=$day->getDate()->format('y-m-d') ?>
+            </td>
+            <td>
+            <?=$day->getNotices() ?>
+            </td>
+            <td>
+            <?=$day->getMentions() ?>
+            </td>
+            <td>
+            <?=$day->getPercentMentions() ?> %
+            </td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    </table>
+    
+    
+    
+    <div>Not readable:</div>
+    <?=implode(', ', $maildirParser->getNotReadable()) ?>
+    <script type="text/javascript">
+    
+    var data = <?=\PodioStats\Day::getArrayAsLineChartJson($maildirParser->getData()) ?>;
+	var options = { datasetFill : true};
+    //Get the context of the canvas element we want to select
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myNewChart = new Chart(ctx).Line(data,options);
+    </script>
 </body>
 </html>
