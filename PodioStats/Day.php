@@ -104,7 +104,7 @@ class Day
                     'data'=>array()
                 ),
                 array(
-                    'fillColor' => 'yellow',
+                    'fillColor' => '',
                     'data'=>array()
                 )
             ),

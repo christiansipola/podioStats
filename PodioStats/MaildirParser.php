@@ -18,7 +18,7 @@ class MaildirParser
         } else {
             $this->filePathDir = 'tmp/.Podio/cur/';
             $this->readFromCache();
-            $this->filterOutWeekendFromData();
+            #$this->filterOutWeekendFromData();
         }
         
     }
