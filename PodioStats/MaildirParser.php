@@ -14,18 +14,16 @@ class MaildirParser
         if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'vps.kaustik.com') {
             $this->filePathDir = '/home/zippo/Maildir/.Podio/cur/';
             $this->readFromMaildir();
-            #echo serialize($maildirParser->getData());die();
         } else {
             $this->filePathDir = 'tmp/.Podio/cur/';
             $this->readFromCache();
-            #$this->filterOutWeekendFromData();
+            $this->filterOutWeekendFromData();
         }
         
     }
     public function readFromMaildir()
     {
         $dir = scandir($this->filePathDir);
-        $show = array();
         
         $this->data = new \ArrayObject();
         
