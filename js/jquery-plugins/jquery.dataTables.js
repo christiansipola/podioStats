@@ -4755,7 +4755,6 @@
 		 *  @param {object} oExtender Object from which the properties will be applied to oOut
 		 *  @returns {object} oOut Reference, just for convenience - oOut === the return.
 		 *  @memberof DataTable#oApi
-		 *  @todo This doesn't take account of arrays inside the deep copied objects.
 		 */
 		function _fnExtend( oOut, oExtender )
 		{
@@ -10548,13 +10547,6 @@
 	 * NOT be manipulated outside of DataTables. Any configuration should be done
 	 * through the initialisation options.
 	 *  @namespace
-	 *  @todo Really should attach the settings object to individual instances so we
-	 *    don't need to create new instances on each $().dataTable() call (if the
-	 *    table already exists). It would also save passing oSettings around and
-	 *    into every single function. However, this is a very significant 
-	 *    architecture change for DataTables and will almost certainly break
-	 *    backwards compatibility with older installations. This is something that
-	 *    will be done in 2.0.
 	 */
 	DataTable.models.oSettings = {
 		/**
@@ -10872,7 +10864,6 @@
 		 * Note that this parameter will be set by the initialisation routine. To
 		 * set a default use {@link DataTable.defaults}.
 		 *  @type array
-		 *  @todo These inner arrays should really be objects
 		 */
 		"aaSorting": null,
 		
@@ -11366,7 +11357,6 @@
 		/**
 		 * Set the display end point - aiDisplay index
 		 *  @type function
-		 *  @todo Should do away with _iDisplayEnd and calculate it on-the-fly here
 		 */
 		"fnDisplayEnd": function ()
 		{
