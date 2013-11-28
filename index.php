@@ -13,6 +13,7 @@ $maildirParser = new PodioStats\MaildirParser();
     <script src="js/jquery-plugins/jquery.dataTables.js"></script>
     <script src="js/Chart.js"></script>
     <link href="css/demo_table.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 </head>
 <body>
     <h1>Podiostatistics for Christian Sipola</h1>
