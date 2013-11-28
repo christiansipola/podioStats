@@ -4,7 +4,7 @@ $classLoader = new SplClassLoader('PodioStats', '.');
 $classLoader->register();
 $maildirParser = new PodioStats\MaildirParser();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html> 
 <html lang="sv">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -18,7 +18,7 @@ $maildirParser = new PodioStats\MaildirParser();
     <h1>Podiostatistics for Christian Sipola</h1>
     <canvas id="myChart" width="1200" height="400"></canvas>
     <div style="width:400px">
-    <table id="datatable" style="width:100%" cellpadding="2px">
+    <table id="datatable" style="width:100%">
     <thead>
         <tr>
         <th>Date</th>
