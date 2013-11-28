@@ -138,7 +138,6 @@ class Day
         $n = count($X);
         $square = create_function('$x', 'return pow($x,2);');
         $x_squared = array_sum(array_map($square, $logX));
-        $y_squared = array_sum(array_map($square, $Y));
         $xy = array_sum(array_map(create_function('$x,$y', 'return $x*$y;'), $logX, $Y));
         
         $bFit = ($n * $xy - array_sum($Y) * array_sum($logX)) /
