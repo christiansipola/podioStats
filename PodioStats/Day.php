@@ -17,6 +17,12 @@ class Day
     private $mentions;
 
     /**
+     *
+     * @var int
+     */
+    private $messages;
+
+    /**
      * 
      * @var \DateTime
      */
@@ -25,7 +31,8 @@ class Day
     public function __construct()
     {
         $this->notices = 0;
-        $this->mentions = 0;    
+        $this->mentions = 0;
+        $this->messages = 0;
     }
     
 	/**
@@ -44,6 +51,14 @@ class Day
         return $this->mentions;
     }
 
+    /**
+     * @return int
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
 	/**
      * @return \DateTime $date
      */
@@ -60,6 +75,11 @@ class Day
     public function addMention()
     {
         $this->mentions++;
+    }
+
+    public function addMessage()
+    {
+        $this->messages++;
     }
 
 	/**

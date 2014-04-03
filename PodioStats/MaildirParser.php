@@ -16,7 +16,8 @@ class MaildirParser
             $this->readFromMaildir();
         } else {
             $this->filePathDir = 'tmp/.Podio/cur/';
-            $this->readFromCache();
+            //$this->readFromCache();
+            $this->readFromMaildir();
             $this->filterOutWeekendFromData();
         }
         
@@ -39,6 +40,7 @@ class MaildirParser
             }
             $dateFound = false;
             $isMention = false;
+            $isMessage = false;
             foreach ($arr as $row) {
                 
                 if (substr($row, 0, 5) == 'Date:') {
@@ -54,17 +56,24 @@ class MaildirParser
                 if (substr($row, 0, 8) == 'Subject:' && stristr($row, 'mention')) {
                     $isMention = true;
                 }
+
+                if (substr($row, 0, 8) == 'Subject:' && stristr($row, 'message')) {
+                    $isMessage = true;
+                }
             }
             if (! $dateFound) {
                 echo "no date found in $file <br />";
             } else {
-                $day->addNotice();
-                if ($isMention) {
-                    $day->addMention();
+                if ($isMessage) {
+                    $day->addMessage();
+                } else {
+                    $day->addNotice();
+                    if ($isMention) {
+                        $day->addMention();
+                    }
                 }
             }
         }
-        
     }
 	
     public function readFromCache(){

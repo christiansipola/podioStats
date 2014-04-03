@@ -27,6 +27,7 @@ $maildirParser = new PodioStats\MaildirParser();
         <th>Notices</th>
         <th>Mentions</th>
         <th>Mentions %</th>
+        <th>Messages</th>
         </tr>
     </thead>
     <tbody>
@@ -49,6 +50,9 @@ $maildirParser = new PodioStats\MaildirParser();
             </td>
             <td>
             <?=$day->getPercentMentions() ?>
+            </td>
+            <td>
+            <?=$day->getMessages() ?>
             </td>
         </tr>
     <?php } ?>
